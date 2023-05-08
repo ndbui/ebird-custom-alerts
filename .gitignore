@@ -1,0 +1,17 @@
+# Virtual environment
+.venv/
+
+# Pycache
+__pycache__/
+webscraper/__pycache__/
+tests/__pycache__
+tests/.pytest_cache
+.pytest_cache
+
+# Logs
+tests/logs
+logs/
+
+# Secrets
+/secrets.json
+/alert-configs.json
