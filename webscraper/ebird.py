@@ -5,38 +5,42 @@ from selenium.webdriver.common.by import By
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-"""Ebird web scraper using Selenium"""
+
 class EbirdWebScraper():
-    """
-    Initialize the scrapper driver
-    
-    Parameters:
-        wait (int): Selenium wait time when trying to find elements in seconds
-    """
+    """Ebird web scraper using Selenium"""
     def __init__(self, username, password, wait=10):
+        """
+        Initialize the scrapper driver
+
+        Parameters:
+            wait: (int) Selenium wait time when trying to find elements in seconds
+        """
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
         self.driver.implicitly_wait(wait)
         self.host_url = "https://ebird.org/"
         self.username = username
         self.password = password
 
-    """Sign in to ebird when the scraper is entered"""
+
     def __enter__(self):
+        """Sign in to ebird when the scraper is entered"""
         self.signin()
         return self
     
-    """Close out the driver on exit"""
+
     def __exit__(self,  exc_type, exc_value, exc_traceback):
+        """Close out the driver on exit"""
         self.driver.close()
 
-    """
-    Sign into ebird using the credentials in the func params
 
-    Parameters:
-        user (string): Username to sign in with
-        password (string): Password to sign in with
-    """
     def signin(self):
+        """
+        Sign into ebird using the credentials in the func params
+
+        Args:
+            user: (string) Username to sign in with
+            password: (string) Password to sign in with
+        """
         print("Signing in...")
         url = self.host_url + "home?forceLogin=true"
         self.driver.get(url)
@@ -51,16 +55,17 @@ class EbirdWebScraper():
         signin_element.click()
 
     
-    """
-    Scrape the list of seen birds in ebird filtered by the given region
 
-    Parameters: 
-        region (string): ebird region code used to filter which life list is scraped 
-
-    Returns:
-        []string: list of ebird bird identifiers 
-    """
     def get_life_list(self, region="world"):
+        """
+        Scrape the list of seen birds in ebird filtered by the given region
+
+        Args:
+            region: (string) ebird region code used to filter which life list is scraped
+
+        Returns:
+            []string: list of ebird bird identifiers
+        """
         url = self.host_url + "lifelist/" + region
         self.driver.get(url)
 

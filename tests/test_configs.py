@@ -1,28 +1,37 @@
 from context import configs
-import sys
+import pytest
 
-"""Initialize the config manager using the config files found in the test dir"""
-def init_manager():
-    paths = {
-        "secrets": "tests/secrets.json",
-        "alert-configs": "tests/alert-configs.json"
-    }
-    return configs.ConfigManager(paths=paths)
-
-"""Test that the config manager loads the alert configs properly"""
 def test_configs_alert_configs():
-    config_manager = init_manager()
+    """Test that the config manager loads the alert configs properly"""
+    paths = {
+        "secrets": "secrets/valid_secrets.json",
+        "alert-configs": "alert-configs.json"
+    }
+    config_manager = configs.ConfigManager(paths=paths)
     assert config_manager.alert_configs != {}
     assert config_manager.alert_configs["testu"]["hotspots"][0] == "Test Hotspot"
     assert config_manager.secrets != {}
     assert config_manager.secrets["ebird"]["user_credentials"]["testu"] == "testp"
     assert config_manager.secrets["ebird"]["apikey"] == "test-apikey"
 
-"""Test that getting the user credentials is working properly"""
 def test_configs_get_user_credentials():
-    config_manager = init_manager()
+    """Test that getting the user credentials is working properly"""
+    paths = {
+        "secrets": "secrets/valid_secrets.json",
+        "alert-configs": "alert-configs.json"
+    }
+    config_manager = configs.ConfigManager(paths=paths)
     password = config_manager.get_user_credentials("testu")
     assert password == "testp"
+
+def test_configs_invalid_secrets():
+    """Testing that the config manager throws an error when it can't find ebird as a key at the root level"""
+    paths = {
+        "secrets": "secrets/invalid_secrets.json",
+        "alert-configs": "alert-configs.json"
+    }
+    with pytest.raises(Exception):
+        config_manager = configs.ConfigManager(paths=paths)
 
 if __name__ == "__main__":
     test_configs_alert_configs()
