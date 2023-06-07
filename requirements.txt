@@ -6,6 +6,7 @@ exceptiongroup==1.1.1
 h11==0.14.0
 idna==3.4
 iniconfig==2.0.0
+mock==5.0.2
 outcome==1.2.0
 packaging==23.1
 pluggy==1.0.0

@@ -31,6 +31,7 @@ class EbirdWebScraper():
     def __exit__(self,  exc_type, exc_value, exc_traceback):
         """Close out the driver on exit"""
         self.driver.close()
+        self.driver.quit()
 
 
     def signin(self):

@@ -3,7 +3,7 @@ import requests
 class EbirdApiWrapper():
     """Wrapper for the Ebird API 2.0"""
 
-    def __init__(self, api_key, host="api.ebird.org", context_root="v2"):
+    def __init__(self, api_key, host="api.ebird.org", context_root="v2", api_delay=0.5):
         """
         Initialize the wrapper with the API key that will be used to call the Ebird API
 
@@ -11,16 +11,19 @@ class EbirdApiWrapper():
             api_key: (string) API key that will be used to call the Ebird API
             host: (string) Host for the ebird api (default: "api.ebird.org")
             context_root: (string) Context root for the ebird api (default: "v2")
+            api_delay: (float) Delay in seconds between api calls
         """
         self.api_key = api_key
         self.host = host
         self.context_root = context_root
+
 
     def generate_request_headers(self):
         """Helper function to generate request headers for each of the EBird API calls"""
         return {
             "x-ebirdapitoken": self.api_key
         }
+
 
     def get_bird_taxonomy(self, species_code):
         """
@@ -37,7 +40,6 @@ class EbirdApiWrapper():
         return requests.get(url, headers=headers)
 
 
-
     def get_checklist(self, checklist_id):
         """
         Get Checklist information from Ebird
@@ -51,6 +53,7 @@ class EbirdApiWrapper():
         url = f"https://{self.host}/{self.context_root}/product/checklist/view/{checklist_id}?fmt=json"
         headers = self.generate_request_headers()
         return requests.get(url, headers=headers)
+
 
     def get_recent_checklists(self, region_code, max_results=20):
         """
