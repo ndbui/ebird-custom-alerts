@@ -3,7 +3,6 @@
 
 # Pycache
 __pycache__/
-webscraper/__pycache__/
 tests/__pycache__
 tests/.pytest_cache
 .pytest_cache
@@ -15,3 +14,9 @@ logs/
 # Secrets
 /secrets.json
 /alert-configs.json
+
+# Idea
+.idea/
+
+# Mypy
+.mypy_cache/
