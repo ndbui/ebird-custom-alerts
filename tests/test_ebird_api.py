@@ -1,5 +1,5 @@
-from context import ebird_api_lib
-from context import configs
+import ebird.api as ebird_api_lib
+import configs.manager as configs
 import os
 import pytest
 

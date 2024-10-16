@@ -20,3 +20,6 @@ logs/
 
 # Mypy
 .mypy_cache/
+
+# # Utility Scripts
+# utils_*.py

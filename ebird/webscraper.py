@@ -1,8 +1,6 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from typing import Optional, Type, Self, List
+from typing import Optional, Type, Self, Dict
 from types import TracebackType
 
 
@@ -17,7 +15,7 @@ class EbirdWebScraper:
             password (str): Ebird user password
             wait (int, optional): Selenium wait time for html elements. Defaults to 10.
         """
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(wait)
         self.host_url = "https://ebird.org/"
         self.username = username
@@ -58,26 +56,27 @@ class EbirdWebScraper:
         signin_element = self.driver.find_element(By.XPATH, "//input[@id='form-submit' and @value='Sign in']")
         signin_element.click()
 
-    def get_life_list(self: Self, region: str = "world") -> List[str]:
+    def get_life_list(self: Self, region: str = "world") -> Dict[str, str]:
         """Scrape the list of seen birds in Ebird filtered by the given region
 
         Args:
             region (str, optional): Ebird region code used to filter which life list is scraped. Defaults to "world".
 
         Returns:
-            List[str]: list of Ebird bird identifiers
+            Dict[str, str]: Dictionary with Ebird bird identifiers as the key and the bird names as the value
         """
 
         url = self.host_url + "lifelist/" + region
         self.driver.get(url)
 
-        retval = []
+        retval = {}
         results = self.driver.find_elements(By.ID, "results")
         species_elements = results[0].find_elements(By.CLASS_NAME, "Observation-species")
         for species_element in species_elements:
             a_tags = species_element.find_elements(By.TAG_NAME, "a")
             if len(a_tags) > 0:
                 species_id = a_tags[0].get_attribute("data-species-code")
-                retval.append(species_id)
+                species_name = a_tags[0].text
+                retval[species_id] = species_name
 
         return retval
